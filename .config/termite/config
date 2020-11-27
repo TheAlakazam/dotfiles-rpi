@@ -1,4 +1,5 @@
 [options]
+browser = firefox
 font = mononoki Nerd Font Mono 12
 [colors]
 

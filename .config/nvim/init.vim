@@ -36,8 +36,8 @@ nnoremap <SPACE> <Nop>
 let mapleader="\<SPACE>"
 nnoremap <leader>e :e $MYVIMRC<CR>   "Edit vimrc
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <esc><esc> :nohlsearch<CR> "Clear search
-" Better split navigation
+nnoremap <esc><esc> :nohlsearch<CR> 
+"Better split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -49,7 +49,6 @@ nmap <leader>h :bprevious<cr>
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
 
-let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
@@ -61,18 +60,14 @@ augroup END
 nmap <leader>a :Lex<CR>
 let g:python3_host_prog='/usr/bin/python3'
 "Terminal stuff
-tnoremap <Esc> <C-\><C-n>
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-
-function! OpenTerminal()
-  split | terminal
-  resize 10
-endfunction
-nmap <leader>t :call OpenTerminal()<CR>
+let g:split_term_default_shell = "fish"
 call plug#begin()
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jiangmiao/auto-pairs'
 Plug 'thaerkh/vim-workspace'
 Plug 'jiangmiao/auto-pairs'
+Plug 'vimlab/split-term.vim'
 "Web Development
 Plug 'mattn/emmet-vim'
 "Autocompletion
@@ -96,6 +91,7 @@ call plug#end()
 colorscheme dracula
 "Plugin Settings
 let g:deoplete#enable_at_startup = 1
+let g:airline_powerline_fonts = 1
 "use TAB as the mapping
 inoremap <silent><expr> <TAB>
       \ pumvisible() ?  "\<C-n>" :
@@ -115,5 +111,14 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 nmap <F5> <Plug>(lcn-menu)
 autocmd FileType rust nmap <silent>gr <Plug>(lcn-rename)
+autocmd FileType rust nnoremap <F8> :Term cargo run<CR>
 nmap <silent> gd <Plug>(lcn-definition)
 let g:rustfmt_autosave = 1
+
+"Plugin: FZF
+nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>bl :Buffers<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>g :Commits<CR>
+nnoremap <silent> <Leader>h :History<CR>
