@@ -16,6 +16,9 @@ super + Escape
 # Launch qutebrowser
 super + ctrl + b
 	qutebrowser
+# Lock Screen
+super + alt + x
+  xflock4
 #
 # bspwm hotkeys
 #
