@@ -21,4 +21,5 @@ bspc rule -a Firefox desktop='^2'
 bspc rule -a Zathura state=tiled
 bspc rule -a Emacs state=tiled
 
-xfce4-panel -r
+xfce4-panel -r &
+cd ~/webui-aria2 && node node-server.js &

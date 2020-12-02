@@ -80,6 +80,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 \ }
 let g:LanguageClient_serverCommands = {
 \ 'rust': ['rust-analyzer'],
+\ 'python': ['/usr/bin/pyls']
 \ }
 "Theme Stuff
 Plug 'dracula/vim', {'as': 'dracula'}
@@ -114,6 +115,8 @@ autocmd FileType rust nmap <silent>gr <Plug>(lcn-rename)
 autocmd FileType rust nnoremap <F8> :Term cargo run<CR>
 nmap <silent> gd <Plug>(lcn-definition)
 let g:rustfmt_autosave = 1
+
+autocmd FileType python nnoremap <F8> :Term python3 #<CR>
 
 "Plugin: FZF
 nnoremap <silent> <C-f> :Files<CR>
