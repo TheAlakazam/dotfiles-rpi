@@ -49,15 +49,7 @@ nmap <leader>h :bprevious<cr>
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
 
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
-nmap <leader>a :Lex<CR>
+nmap <leader>a :Fern %:h -drawer -toggle<CR>
 let g:python3_host_prog='/usr/bin/python3'
 "Terminal stuff
 let g:split_term_default_shell = "fish"
@@ -66,6 +58,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jiangmiao/auto-pairs'
 Plug 'thaerkh/vim-workspace'
+Plug 'lambdalisue/fern.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
 "Web Development
@@ -79,7 +72,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 \ 'do': 'bash install.sh',
 \ }
 let g:LanguageClient_serverCommands = {
-\ 'rust': ['rust-analyzer'],
+\ 'rust': ['rls'],
 \ 'python': ['/usr/bin/pyls']
 \ }
 "Theme Stuff
