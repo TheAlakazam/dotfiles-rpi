@@ -18,7 +18,7 @@ super + ctrl + b
 	qutebrowser
 # Lock Screen
 super + alt + x
-  xflock4
+  i3lock-fancy -p
 #
 # bspwm hotkeys
 #
