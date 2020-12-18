@@ -9,7 +9,8 @@ super + Return
 # program launcher
 super + @space
 	rofi -show drun
-
+super + e
+  rofi -show run
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
@@ -19,6 +20,9 @@ super + ctrl + b
 # Lock Screen
 super + alt + x
   i3lock-fancy -p
+# Screenshot
+Print
+  scrot -e 'mv $f ~/Pictures/Screenshots/'
 #
 # bspwm hotkeys
 #
