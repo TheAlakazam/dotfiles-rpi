@@ -19,7 +19,7 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 # Aliases
-alias config=/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 # Antigen Plugins
 source $HOME/antigen.zsh
 
