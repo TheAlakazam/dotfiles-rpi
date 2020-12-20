@@ -27,4 +27,5 @@ picom &
 
 nitrogen --restore &
 rclone mount Drive:org ~/org --daemon
-rclone mount dropbox ~/dropbox --daemon
+rclone mount dropbox: ~/dropbox --daemon
+setxkbmap -option caps:ctrl_modifier
