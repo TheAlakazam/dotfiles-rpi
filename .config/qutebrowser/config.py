@@ -165,3 +165,4 @@ c.url.searchengines = {'DEFAULT': 'https://google.com/?q={}'}
 c.url.start_pages = 'https://google.com'
 
 config.bind('M', 'hint links spawn mpv {hint-url}')
+config.bind('zp', 'open -t https://getpocket.com/edit?url={url}')
