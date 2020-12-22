@@ -15,6 +15,8 @@ set nojoinspaces
 set guifont=mononoki\ Nerd\ Font\ Mono:h14
 set background=dark
 set hidden
+filetype plugin on
+filetype indent on
 
 " More Natural splits
 set splitbelow
@@ -31,7 +33,9 @@ set completeopt -=preview
 set undodir=~/.nvim/undodir
 set undofile
 
-""""""""" Custom Keybindings
+"Set system clipboard as default
+set clipboard+=unnamedplus
+"""""""""" Custom Keybindings
 nnoremap <SPACE> <Nop>
 let mapleader="\<SPACE>"
 nnoremap <leader>e :e $MYVIMRC<CR>   "Edit vimrc
@@ -52,7 +56,7 @@ nmap <leader>bl :ls<CR>
 nmap <leader>a :Fern %:h -drawer -toggle<CR>
 let g:python3_host_prog='/usr/bin/python3'
 "Terminal stuff
-let g:split_term_default_shell = "fish"
+let g:split_term_default_shell = "zsh"
 call plug#begin()
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -73,7 +77,9 @@ Plug 'autozimu/LanguageClient-neovim', {
 \ }
 let g:LanguageClient_serverCommands = {
 \ 'rust': ['rls'],
-\ 'python': ['/usr/bin/pyls']
+\ 'python': ['/usr/bin/pyls'],
+\ 'sh': ['bash-language-server', 'start'],
+\ 'ocaml': ['ocamllsp'],
 \ }
 "Theme Stuff
 Plug 'dracula/vim', {'as': 'dracula'}
@@ -103,13 +109,10 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-nmap <F5> <Plug>(lcn-menu)
-autocmd FileType rust nmap <silent>gr <Plug>(lcn-rename)
-autocmd FileType rust nnoremap <F8> :Term cargo run<CR>
-nmap <silent> gd <Plug>(lcn-definition)
+nmap <Leader>gm <Plug>(lcn-menu)
+nmap <Leader>gr <Plug>(lcn-rename)
+nmap <Leader>gd <Plug>(lcn-definition)
 let g:rustfmt_autosave = 1
-
-autocmd FileType python nnoremap <F8> :Term python3 #<CR>
 
 "Plugin: FZF
 nnoremap <silent> <C-f> :Files<CR>
