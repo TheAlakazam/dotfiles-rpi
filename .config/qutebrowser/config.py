@@ -158,7 +158,7 @@ c.url.open_base_url = False
 # the search engine name to the search term, e.g. `:open google
 # qutebrowser`.
 # Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://google.com/?q={}'}
+c.url.searchengines = {'DEFAULT': 'https://google.com/search?hl=en&q={}'}
 
 # Page(s) to open at the start.
 # Type: List of FuzzyUrl, or FuzzyUrl
@@ -166,3 +166,5 @@ c.url.start_pages = 'https://google.com'
 
 config.bind('M', 'hint links spawn mpv {hint-url}')
 config.bind('zp', 'open -t https://getpocket.com/edit?url={url}')
+config.bind('zd', 'hint links spawn --detach zathura {hint-url}')
+config.bind('zd', 'hint links spawn --detach zathura {hint-url}')
