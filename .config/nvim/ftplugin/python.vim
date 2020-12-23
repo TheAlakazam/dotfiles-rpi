@@ -1,1 +1,1 @@
-nnoremap <buffer> <Leader>cr :Term python3 #<CR>
+nnoremap <buffer> <Leader>br :Term python3 #<CR>

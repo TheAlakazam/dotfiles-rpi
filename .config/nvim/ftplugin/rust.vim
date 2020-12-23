@@ -1,1 +1,1 @@
-nnoremap <buffer> <Leader>cc :Term cargo run<CR>
+nnoremap <buffer> <Leader>bc :Term cargo run<CR>
