@@ -65,6 +65,7 @@ Plug 'thaerkh/vim-workspace'
 Plug 'lambdalisue/fern.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
+Plug 'preservim/nerdcommenter'
 "Web Development
 Plug 'mattn/emmet-vim'
 "Autocompletion
@@ -121,3 +122,6 @@ nnoremap <silent> <Leader>bl :Buffers<CR>
 nnoremap <silent> <Leader>' :Marks<CR>
 nnoremap <silent> <Leader>g :Commits<CR>
 nnoremap <silent> <Leader>h :History<CR>
+
+"Plugin: nerdcommenter
+let g:NERDCreateDefaultMappings = 1
