@@ -67,6 +67,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdcommenter'
+Plug 'tpope/vim-surround'
 "Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
