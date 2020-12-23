@@ -65,9 +65,8 @@ Plug 'thaerkh/vim-workspace'
 Plug 'lambdalisue/fern.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
+Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdcommenter'
-"Web Development
-Plug 'mattn/emmet-vim'
 "Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
