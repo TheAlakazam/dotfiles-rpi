@@ -40,7 +40,7 @@ nnoremap <SPACE> <Nop>
 let mapleader="\<SPACE>"
 nnoremap <leader>e :e $MYVIMRC<CR>   "Edit vimrc
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <esc><esc> :nohlsearch<CR> 
+nnoremap <esc><esc> :nohlsearch<CR>
 "Better split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -53,7 +53,6 @@ nmap <leader>h :bprevious<cr>
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
 
-nmap <leader>a :Fern %:h -drawer -toggle<CR>
 let g:python3_host_prog='/usr/bin/python3'
 "Terminal stuff
 let g:split_term_default_shell = "zsh"
@@ -62,16 +61,18 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jiangmiao/auto-pairs'
 Plug 'thaerkh/vim-workspace'
-Plug 'lambdalisue/fern.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 "Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'dense-analysis/ale'
 Plug 'autozimu/LanguageClient-neovim', {
 \ 'branch': 'next',
 \ 'do': 'bash install.sh',
@@ -98,10 +99,10 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ?  "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort ""     
+function! s:check_back_space() abort ""
   let col = col(.) - 1
   return !col || getline(.)[col - 1]  =~ s
-endfunction ""   
+endfunction ""
 inoremap <silent><expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -125,3 +126,27 @@ nnoremap <silent> <Leader>h :History<CR>
 
 "Plugin: nerdcommenter
 let g:NERDCreateDefaultMappings = 1
+
+"Plugin: Nerdtree
+nnoremap <Leader>a :NERDTreeToggle<CR>
+
+"Plugin: ale
+nmap <silent> <C-e> <Plug>(ale_next_wrap)
+let g:ale_sign_error                  = '✘'
+let g:ale_sign_warning                = '⚠'
+highlight ALEErrorSign ctermbg        =NONE ctermfg=red
+highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
+let g:ale_linters_explicit            = 1
+let g:ale_lint_on_text_changed        = 'never'
+let g:ale_lint_on_enter               = 0
+let g:ale_lint_on_save                = 1
+let g:ale_fix_on_save                 = 1
+
+let g:ale_linters = {
+\   'ocaml':      ['merlin'],
+\}
+
+let g:ale_fixers = {
+\   'ocaml':      ['ocamlformat'],
+\   '*':          ['remove_trailing_lines', 'trim_whitespace'],
+\}
