@@ -39,3 +39,6 @@ antigen apply
 
 # opam configuration
 test -r /home/piyush/.opam/opam-init/init.zsh && . /home/piyush/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# Created by `userpath` on 2020-12-31 18:05:50
+export PATH="$PATH:/home/piyush/.local/bin"
