@@ -26,6 +26,6 @@ bspc rule -a Emacs state=tiled
 picom &
 
 nitrogen --restore &
-rclone mount Drive:org ~/org --daemon
-rclone mount dropbox: ~/dropbox --daemon
+# rclone mount Drive:org ~/org --daemon
+# rclone mount dropbox: ~/dropbox --daemon
 setxkbmap -option caps:ctrl_modifier
