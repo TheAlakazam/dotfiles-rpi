@@ -165,6 +165,6 @@ c.url.searchengines = {'DEFAULT': 'https://google.com/search?hl=en&q={}'}
 c.url.start_pages = 'https://google.com'
 
 config.bind('M', 'hint links spawn mpv --ytdl-format="bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]" {hint-url}')
-config.bind('zp', 'open -t https://getpocket.com/edit?url={url}')
+config.bind('zp', 'spawn --userscript qutepocket')
 config.bind('zd', 'hint links spawn --detach zathura {hint-url}')
 config.bind('zd', 'hint links spawn --detach zathura {hint-url}')

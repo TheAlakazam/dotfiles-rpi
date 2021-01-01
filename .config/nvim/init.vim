@@ -132,6 +132,7 @@ nnoremap <Leader>a :NERDTreeToggle<CR>
 
 "Plugin: ale
 nmap <silent> <C-e> <Plug>(ale_next_wrap)
+nmap <silent> <C-o> <Plug>(:ALEGoToDefinition)
 let g:ale_sign_error                  = '✘'
 let g:ale_sign_warning                = '⚠'
 highlight ALEErrorSign ctermbg        =NONE ctermfg=red
