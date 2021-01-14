@@ -37,8 +37,4 @@ antigen apply
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# opam configuration
-test -r /home/piyush/.opam/opam-init/init.zsh && . /home/piyush/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-# Created by `userpath` on 2020-12-31 18:05:50
-export PATH="$PATH:/home/piyush/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"

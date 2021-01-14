@@ -1,0 +1,232 @@
+#!/bin/bash
+
+# Discover and choose default XDG MIME applications
+
+set -eo pipefail
+
+DEFAULT_COLUMNS='Flags,Application,GenericName,Exec'
+FLAG_NAMES=(
+Terminal
+NoDisplay
+Hidden
+DBusActivateable
+StartupNotify
+)
+DESKTOP_DIRS=(
+~/.local/share/applications/
+/usr/local/share/applications/
+/usr/share/applications/
+)
+
+for ((i=0; i<${#DESKTOP_DIRS[@]}; i++ ));  do
+  if ! [[ -d "${DESKTOP_DIRS[$i]}" ]]; then
+    unset "DESKTOP_DIRS[$i]"
+  fi
+done
+
+usage() {
+  cat <<-EOF
+Usage: $0 [options..] <file>
+Options:
+  -s, --set APPLICATION    Set the default application. Matches the first
+                            application that starts with APPLICATION.
+  -c, --columns COLUMNS    Specify columns to display. Default value is
+                            '${DEFAULT_COLUMNS}'.
+  -h, --help               Display this help and exit.
+Columns:
+  Application    The name of the application's desktop entry file.
+  Location       The desktop entry's location.
+  Default        Whether the application is the default handler.
+  Flags          Condensed list of the desktop entry's boolean attributes. Each
+                  flag corresponds to the first letter of a key (e.g. 'H' means
+                  'Hidden' is true). A '*' character is used to mark an
+                  application as the default handler.
+  *              Any other columns will be evaluated as desktop entry keys.
+Flags
+$(
+  for name in "${FLAG_NAMES[@]}"; do
+    echo "  ${name:0:1} = ${name}"
+  done
+)
+  * = Default handler for this mime type
+EOF
+}
+
+# List all desktop entry files that have the mime_target as a supported
+# MimeType.
+entry_files() {
+  local mime_target dir
+
+  mime_target=$1
+
+  for dir in "${DESKTOP_DIRS[@]}"; do
+    grep -sl "MimeType\\s*=.*\\W${mime_target}[;\$]" "${dir}"/*.desktop || :
+  done
+}
+
+# Remove duplicate files, favoring local desktop entries over system-wide
+# entries.
+filter_duplicate_files() {
+  while read -r entry_file; do
+    find "${DESKTOP_DIRS[@]}" -name "$(basename "${entry_file}")" | head -n 1
+  done | sort -u
+}
+
+# Display contents of a desktop entry entry_file under the [Desktop Entry] heading.
+entry() {
+  awk '/^\[Desktop Entry\]/{flag=1;next}/^\[/{flag=0}flag' "$1"
+}
+
+# Parse the value of a desktop entry key.
+entry_parse() {
+  awk -F '=' "/^$1[\\s=]/ {print \$2}"
+}
+
+# Display a formated list of desktop entries.
+format_entries() {
+  local mime_type columns entry_file entry row column
+
+  mime_type=$1
+  columns=$2
+
+  while read -r entry_file; do
+    entry=$(entry "${entry_file}")
+    row=""
+    for column in $(tr ',' "\n" <<<"${columns}"); do
+      case ${column} in
+        Default)
+          if is_default "${mime_type}" "${entry_file}"; then
+            row="${row}true#"
+          else
+            row="${row}#"
+          fi
+          ;;
+        Flags)
+          row="${row}$(entry_flags "${entry_file}" "${mime_type}")#"
+          ;;
+        Application)
+          row="${row}$(basename "${entry_file}" .desktop)#"
+          ;;
+        Location)
+          row="${row}${entry_file}#"
+          ;;
+        *)
+          row="${row}$(entry_parse "${column}" <<<"${entry}")#"
+          ;;
+      esac
+    done
+    echo "${row}"
+  done \
+    | column --separator '#' --table --table-columns "${columns}" \
+    | tee >(grep -q ^ || echo 'No applications' 1>&2)
+}
+
+# Returns 0 if the given entry_file is the default handler of the given mime type.
+is_default() {
+  [[ $(xdg-mime query default "${1}" 2>/dev/null) = "${2##*/}" ]]
+}
+
+# Calculate a flag string for a desktop entry.
+entry_flags() {
+  local entry_file mime_type flags entry name
+
+  entry_file=$1
+  mime_type=$2
+
+  if is_default "${mime_type}" "${entry_file}"; then
+    flags="${flags}*"
+  else
+    flags="${flags}-"
+  fi
+
+  entry=$(entry "${entry_file}")
+  for name in "${FLAG_NAMES[@]}"; do
+    if [[ $(entry_parse "${name}" <<<"${entry}") = true ]]; then
+      flags="${flags}${name:0:1}"
+    else
+      flags="${flags}-"
+    fi
+  done
+
+  echo "${flags}"
+}
+
+# Print the first desktop entry that matches app_target.
+match_app() {
+  local app_target app entry_file
+
+  app_target=$1
+
+  while read -r entry_file; do
+    app=$(basename "${entry_file}" .desktop)
+    if [[ "${app}" =~ ^${app_target} ]]; then
+      echo "${entry_file}"
+      break
+    fi
+  done
+}
+
+# Display mime type and applications that support it.
+list_apps() {
+  local mime_type columns
+
+  mime_type=$1
+  columns=$2
+
+  echo "MimeType: ${mime_type}"
+  echo
+  entry_files "${mime_type}" \
+    | filter_duplicate_files \
+    | format_entries "${mime_type}" "${columns}"
+}
+
+# Set default application for opening files of a particular mime type.
+set_default() {
+  local app_target mime_type entry_file
+
+  app_target="$1"
+  mime_type="$2"
+
+  entry_file=$(entry_files "${mime_type}" | match_app "${app_target}")
+  xdg-mime default "${entry_file##*/}" "${mime_type}"
+}
+
+main() {
+  local app_target mime_type
+
+  columns=${DEFAULT_COLUMNS}
+
+  while (( $# )); do
+    case "$1" in
+      -s|--set)
+        app_target=$2
+        shift 2
+        ;;
+      -c|--columns)
+        columns=$2
+        shift 2
+        ;;
+      -h|--help)
+        usage
+        exit
+        ;;
+      *)
+        mime_type=$(xdg-mime query filetype "$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -n ${app_target} && -n ${mime_type} ]]; then
+    set_default "${app_target}" "${mime_type}"
+  fi
+
+  if [[ -n ${mime_type} ]]; then
+    list_apps "${mime_type}" "${columns}"
+  else
+    usage
+    exit 2
+  fi
+}
+
+main "$@"

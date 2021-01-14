@@ -5,11 +5,13 @@ set ruler
 set relativenumber
 set formatoptions+=o
 set textwidth=0
+set number
 set expandtab
 set tabstop=2
 set shiftwidth=2
 set noerrorbells
 set modeline
+set nohlsearch
 set linespace=0
 set nojoinspaces
 set guifont=mononoki\ Nerd\ Font\ Mono:h14
@@ -40,12 +42,14 @@ nnoremap <SPACE> <Nop>
 let mapleader="\<SPACE>"
 nnoremap <leader>e :e $MYVIMRC<CR>   "Edit vimrc
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <esc><esc> :nohlsearch<CR>
 "Better split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+"Line navigation
+xnoremap K :move '<-2<CR>gv-gv
+xnoremap J :move '>+1<CR>gv-gv
 "Use buffers instead of tabs
 nmap <leader>n :enew<CR>
 nmap <leader>l :bnext<cr>
@@ -56,11 +60,13 @@ nmap <leader>bl :ls<CR>
 let g:python3_host_prog='/usr/bin/python3'
 "Terminal stuff
 let g:split_term_default_shell = "zsh"
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+"Plugins
 call plug#begin()
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'jiangmiao/auto-pairs'
-Plug 'thaerkh/vim-workspace'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vimlab/split-term.vim'
 Plug 'airblade/vim-gitgutter'
@@ -68,11 +74,13 @@ Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
+Plug 'luochen1990/rainbow'
 "Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'dense-analysis/ale'
+Plug 'clojure-vim/async-clj-omni'
 Plug 'autozimu/LanguageClient-neovim', {
 \ 'branch': 'next',
 \ 'do': 'bash install.sh',
@@ -94,15 +102,7 @@ colorscheme dracula
 "Plugin Settings
 let g:deoplete#enable_at_startup = 1
 let g:airline_powerline_fonts = 1
-"use TAB as the mapping
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ?  "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort ""
-  let col = col(.) - 1
-  return !col || getline(.)[col - 1]  =~ s
-endfunction ""
+call deoplete#custom#option('keyword_patterns', {'clojure': '[\w!$%&*+/:<=>?@\^_~\-\.#]*'})
 inoremap <silent><expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -132,7 +132,6 @@ nnoremap <Leader>a :NERDTreeToggle<CR>
 
 "Plugin: ale
 nmap <silent> <C-e> <Plug>(ale_next_wrap)
-nmap <silent> <C-o> <Plug>(:ALEGoToDefinition)
 let g:ale_sign_error                  = '✘'
 let g:ale_sign_warning                = '⚠'
 highlight ALEErrorSign ctermbg        =NONE ctermfg=red

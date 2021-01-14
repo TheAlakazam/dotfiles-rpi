@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# xdg-open "$(rg --files --no-messages ~/ | rofi -threads 0 -dmenu -sort -sorting-method fzf -i)"
+rg --files --no-messages ~/Documents ~/Downloads | rofi -threads 0 -dmenu -sort -sorting-method fzf -i -p "Find" | $HOME/.local/bin/jaro

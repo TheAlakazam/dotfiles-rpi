@@ -23,6 +23,9 @@ super + alt + x
 # Screenshot
 Print
   scrot -e 'mv $f ~/Pictures/Screenshots/'
+# Open File finder in Rofi
+ctrl + o
+  $HOME/.local/bin/rofi-files
 #
 # bspwm hotkeys
 #

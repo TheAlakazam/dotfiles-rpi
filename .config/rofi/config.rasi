@@ -1,6 +1,6 @@
 configuration {
   modi: "window,drun,run";
-  font: "mononoki Nerd Font Mono 12";
+  font: "mononoki Nerd Font 12";
   terminal: "termite";
 /*	modi: "window,run,ssh";*/
 /*	width: 50;*/
