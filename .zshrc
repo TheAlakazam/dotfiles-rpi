@@ -22,7 +22,7 @@ compinit
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim=nvim
 alias vi=nvim
-alias ls=lsd
+alias ls='ls --color=auto'
 # Antigen Plugins
 source $HOME/antigen.zsh
 
